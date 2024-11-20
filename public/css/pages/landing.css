@@ -1,0 +1,863 @@
+/* Ajouter en haut du fichier pour le CSS critique */
+.hero {
+    content-visibility: auto;
+    contain-intrinsic-size: 700px;
+}
+
+/* Optimiser les sections non visibles initialement */
+.divine-concept,
+.features,
+.divine-excellence,
+.divine-journey,
+.testimonials,
+.divine-faq,
+.cta {
+    content-visibility: auto;
+    contain-intrinsic-size: 600px;
+}
+
+/* Styles spécifiques à la landing page */
+.landing-page {
+    overflow-x: hidden;
+    background: var(--obsidian);
+}
+
+/* Hero Section */
+.hero {
+    padding: 8rem 0;
+    margin-top: -4rem;
+    background: linear-gradient(rgba(10, 9, 8, 0.8), rgba(10, 9, 8, 0.9)),
+                url('/images/temple.webp') center/cover;
+    position: relative;
+    z-index: 1;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.1;
+}
+
+.hero-content {
+    background: rgba(10, 9, 8, 0.85);
+    padding: 3rem;
+    border-radius: 15px;
+    border: 1px solid var(--border-gold);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.mega-title {
+    font-size: 5rem;
+    margin-bottom: 2rem;
+    letter-spacing: 1rem;
+    color: var(--gold-primary);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.crown-icon {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    color: var(--gold-primary);
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    animation: float 3s ease-in-out infinite;
+}
+
+.hero-subtitle {
+    font-size: 2rem;
+    color: var(--gold-light);
+    margin-bottom: 2rem;
+    font-family: 'Cinzel', serif;
+}
+
+.hero-description {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    color: var(--text);
+}
+
+/* Styles pour l'oracle wisdom */
+.oracle-wisdom {
+    background: rgba(255, 215, 0, 0.03);
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    padding: 0.7rem 1.5rem;
+    margin: 1rem auto;
+    max-width: 600px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+}
+
+.oracle-wisdom i {
+    color: var(--gold-primary);
+    font-size: 0.9rem;
+}
+
+.oracle-wisdom span {
+    color: var(--gold-light);
+    font-size: 0.9rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px;
+}
+
+/* Animation subtile */
+@keyframes mysticPulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+.oracle-wisdom i {
+    animation: mysticPulse 3s infinite ease-in-out;
+}
+
+/* Adaptation responsive */
+@media (max-width: 768px) {
+    .oracle-wisdom {
+        margin: 1rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+/* Divine Concept */
+.divine-concept {
+    padding: 8rem 0;
+    background: linear-gradient(135deg, var(--obsidian), var(--obsidian-light));
+    position: relative;
+    overflow: hidden;
+}
+
+.divine-concept::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.03;
+    pointer-events: none;
+}
+
+.concept-intro {
+    font-size: 1.2rem;
+    color: var(--gold-light);
+    margin-bottom: 3rem;
+    font-style: italic;
+}
+
+.divine-aspects {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.aspect-item {
+    padding: 2rem;
+    background: linear-gradient(145deg, rgba(10, 9, 8, 0.8), rgba(26, 24, 23, 0.8));
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.aspect-item i {
+    font-size: 2rem;
+    color: var(--gold-primary);
+    margin-bottom: 1rem;
+}
+
+.aspect-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--gold-primary);
+}
+
+/* Divine Power */
+.divine-power {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.divine-core {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle at 30%, 
+        #fff 0%,
+        var(--gold-light) 40%,
+        var(--gold-primary) 70%,
+        var(--gold-dark) 100%
+    );
+    border-radius: 50%;
+    animation: corePulse 4s ease-in-out infinite;
+    z-index: 2;
+    box-shadow: 0 0 60px var(--gold-primary);
+}
+
+.divine-core::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    transform: translate(-50%, -50%);
+    background: conic-gradient(
+        from 0deg,
+        transparent,
+        var(--gold-primary) 20%,
+        transparent 25%,
+        transparent 35%,
+        var(--gold-light) 45%,
+        transparent 50%,
+        transparent 65%,
+        var(--gold-primary) 75%,
+        transparent 80%
+    );
+    border-radius: 50%;
+    animation: rotateBeam 12s linear infinite;
+    opacity: 0.6;
+}
+
+.power-rings {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.power-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid var(--gold-primary);
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 20px var(--gold-primary);
+}
+
+.power-ring:nth-child(1) {
+    animation: rotateRing 10s linear infinite;
+    box-shadow: 0 0 30px var(--gold-primary);
+}
+
+.power-ring:nth-child(2) {
+    width: 80%;
+    height: 80%;
+    left: 10%;
+    top: 10%;
+    animation: rotateRing 8s linear infinite reverse;
+    box-shadow: 0 0 25px var(--gold-light);
+}
+
+.power-ring:nth-child(3) {
+    width: 60%;
+    height: 60%;
+    left: 20%;
+    top: 20%;
+    animation: rotateRing 6s linear infinite;
+    box-shadow: 0 0 20px var(--gold-dark);
+}
+
+.divine-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    animation: rotateSymbols 20s linear infinite;
+}
+
+.particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: var(--gold-light);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--gold-primary);
+}
+
+.particle::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    border-radius: inherit;
+    filter: blur(1px);
+}
+
+.divine-symbols {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    transform: translate(-50%, -50%);
+    animation: rotateSymbols 20s linear infinite;
+    z-index: 2;
+}
+
+.divine-symbol {
+    position: absolute;
+    font-size: 2.5rem;
+    color: var(--gold-primary);
+    text-shadow: 0 0 15px var(--gold-primary);
+    opacity: 0.8;
+}
+
+/* Positionnement des symboles sur les anneaux */
+.divine-symbol:nth-child(1) {
+    left: 200px;
+    top: 0;
+    transform: translate(-50%, -50%);
+}
+
+.divine-symbol:nth-child(2) {
+    right: 0;
+    top: 200px;
+    transform: translate(50%, -50%);
+}
+
+.divine-symbol:nth-child(3) {
+    left: 200px;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+}
+
+.divine-symbol:nth-child(4) {
+    left: 0;
+    top: 200px;
+    transform: translate(-50%, -50%);
+}
+
+/* Excellence Divine */
+.divine-excellence {
+    padding: 8rem 0;
+    background: linear-gradient(135deg, var(--obsidian), var(--obsidian-light));
+    position: relative;
+    overflow: hidden;
+}
+
+.excellence-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.excellence-icon {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 2.5rem;
+    color: var(--gold-primary);
+    margin-bottom: 1rem;
+}
+
+.excellence-icon .secondary-icon {
+    font-size: 1.8rem;
+    color: var(--gold-light);
+}
+
+.excellence-title {
+    color: var(--gold-primary);
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.excellence-description {
+    color: var(--text);
+    margin-bottom: 1.5rem;
+}
+
+.excellence-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.excellence-features li {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--gold-light);
+}
+
+.excellence-features i {
+    color: var(--gold-primary);
+}
+
+/* CTA Section */
+.cta {
+    padding: 8rem 0;
+    background: linear-gradient(135deg, var(--obsidian), var(--obsidian-light));
+    position: relative;
+    overflow: hidden;
+}
+
+.cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.1;
+}
+
+.cta .excellence-item {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 3rem;
+}
+
+.cta h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.cta .lead {
+    font-size: 1.3rem;
+    color: var(--gold-light);
+    margin-bottom: 2rem;
+}
+
+.cta .btn-primary {
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    margin-top: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .mega-title {
+        font-size: 3rem;
+        letter-spacing: 0.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+    }
+
+    .excellence-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .divine-power {
+        height: 400px;
+    }
+
+    .power-rings {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+/* Testimonials */
+.testimonials {
+    padding: 8rem 0;
+    background: linear-gradient(135deg, var(--obsidian), var(--obsidian-light));
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonials::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+    animation: testimonialGlow 10s ease-in-out infinite alternate;
+}
+
+.testimonial-card {
+    position: relative;
+    padding: 3rem 2rem;
+    background: linear-gradient(145deg, 
+        rgba(10, 9, 8, 0.95), 
+        rgba(26, 24, 23, 0.95)
+    );
+    border: 1px solid var(--border-gold);
+    border-radius: 15px;
+    height: 100%;
+    transition: all 0.4s ease;
+    overflow: hidden;
+}
+
+.testimonial-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg,
+        transparent,
+        var(--gold-primary),
+        transparent
+    );
+    animation: shimmerBorder 3s infinite;
+}
+
+.testimonial-content {
+    position: relative;
+    z-index: 2;
+}
+
+.testimonial-quote {
+    position: absolute;
+    top: -1rem;
+    left: 0;
+    font-size: 4rem;
+    color: var(--gold-primary);
+    opacity: 0.2;
+    transform: rotate(180deg);
+}
+
+.testimonial-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid var(--border-gold);
+    padding-top: 1.5rem;
+    margin-top: auto;
+}
+
+.author-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--obsidian);
+}
+
+.author-info {
+    flex: 1;
+}
+
+.author-name {
+    font-size: 1.2rem;
+    color: var(--gold-primary);
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+.author-title {
+    font-size: 0.9rem;
+    color: var(--gold-light);
+    opacity: 0.8;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
+}
+
+/* Divine FAQ */
+.divine-faq {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, var(--obsidian), var(--obsidian-light));
+    position: relative;
+    overflow: hidden;
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    margin-bottom: 0.5rem;
+}
+
+.faq-question {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(145deg, 
+        rgba(10, 9, 8, 0.95), 
+        rgba(26, 24, 23, 0.95)
+    );
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    color: var(--gold-primary);
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
+    cursor: pointer;
+}
+
+.faq-question i {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--gold-light);
+    transform: rotate(0deg);
+}
+
+.faq-question:not(.collapsed) i {
+    transform: rotate(90deg);
+}
+
+.faq-question:hover {
+    transform: translateX(5px);
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+}
+
+.faq-question:not(.collapsed) {
+    border-radius: 12px 12px 0 0;
+    border-bottom: none;
+}
+
+.faq-answer {
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(145deg, 
+        rgba(10, 9, 8, 0.8), 
+        rgba(26, 24, 23, 0.8)
+    );
+    border: 1px solid var(--border-gold);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    margin-top: -1px;
+    color: var(--text);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: top;
+}
+
+/* Animation pour l'apparition des réponses */
+.collapse:not(.show) {
+    display: block;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.collapse.show {
+    height: auto;
+    opacity: 1;
+    transition: height 0.3s ease, opacity 0.3s ease;
+}
+
+/* Features Section */
+.features {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, var(--obsidian), var(--obsidian-light));
+}
+
+.feature-card {
+    padding: 2rem;
+    text-align: center;
+    height: 100%;
+    background: linear-gradient(145deg, 
+        rgba(10, 9, 8, 0.95), 
+        rgba(26, 24, 23, 0.95)
+    );
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    color: var(--gold-primary);
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 15px var(--gold-primary);
+}
+
+.feature-card h3 {
+    color: var(--gold-primary);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: var(--text);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Divine Journey */
+.divine-journey {
+    padding: 8rem 0;
+    background: linear-gradient(135deg, var(--obsidian), var(--obsidian-light));
+    position: relative;
+    overflow: hidden;
+}
+
+.journey-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    position: relative;
+}
+
+.journey-steps::before {
+    content: '';
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent,
+        var(--gold-primary),
+        transparent
+    );
+    z-index: 1;
+}
+
+.step {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    background: linear-gradient(145deg, 
+        rgba(10, 9, 8, 0.95), 
+        rgba(26, 24, 23, 0.95)
+    );
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+}
+
+.step-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--obsidian);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.step h3 {
+    color: var(--gold-primary);
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.step p {
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+@media (max-width: 992px) {
+    .journey-steps {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .journey-steps::before {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .journey-steps {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Ajustement des espacements entre les sections */
+.landing-page section {
+    position: relative;
+    z-index: 1;
+}
+
+.landing-page section:not(:first-child) {
+    margin-top: -1px; /* Évite les doubles bordures entre les sections */
+}
+
+/* Harmonisation des arrière-plans */
+.features,
+.divine-concept,
+.divine-excellence,
+.divine-journey,
+.testimonials,
+.divine-faq,
+.cta {
+    background: linear-gradient(135deg, var(--obsidian), var(--obsidian-light));
+    border-top: 1px solid var(--border-gold);
+    border-bottom: 1px solid var(--border-gold);
+}
+
+/* Ajout du style pour le logo dans le hero */
+.hero-logo {
+    width: 120px;
+    height: 120px;
+    aspect-ratio: 1;
+}
+
+/* Ajustement de l'animation float existante pour le logo */
+@keyframes float {
+    0%, 100% { 
+        transform: translateY(0) scale(1); 
+        filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+    }
+    50% { 
+        transform: translateY(-10px) scale(1.05);
+        filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.6));
+    }
+}
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16/9;
+}

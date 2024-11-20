@@ -1,0 +1,408 @@
+<div class="container-fluid py-5">
+    <h1 class="mb-5 neon-text text-center display-4">Tableau de bord</h1>
+
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <form id="dateFilterForm" action="/dashboard/dates" method="POST"
+                class="card glassmorphism neon-card shadow-lg">
+                <div class="card-body p-4">
+                    <h2 class="card-title h4 mb-4 neon-text">Filtrer par date</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label for="startDate" class="form-label">Date de début</label>
+                            <input type="date" class="form-control glassmorphism" id="startDate" name="startDate"
+                                value="<%= startDate %>"
+                                max="<%= endDate %>"
+                                required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="endDate" class="form-label">Date de fin</label>
+                            <input type="date" class="form-control glassmorphism" id="endDate" name="endDate"
+                                value="<%= endDate %>"
+                                min="<%= startDate %>"
+                                required>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">Filtrer</button>
+                        </div>
+                    </div>
+                    <p class="mt-4 mb-0">
+                        <span class="card-title h4 mb-0">Période : <strong>du <%= displayStartDate %> au <%= displayEndDate %></strong></span>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-lg-8">
+            <div class="card glassmorphism neon-card shadow-lg h-100">
+                <div class="card-body p-4">
+                    <h2 class="card-title h4 mb-4 neon-text">Résumé financier</h2>
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card glassmorphism neon-card h-100 shadow">
+                                <div class="card-body p-3">
+                                    <h6 class="card-subtitle mb-2 neon-text">Revenus totaux</h6>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-money-bill-wave fa-lg me-2 neon-text"></i>
+                                        <div class="amount-display text-end flex-grow-1">
+                                            <%= numeral(totalRevenus).format('0,0.00') %> €
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card glassmorphism neon-card h-100 shadow">
+                                <div class="card-body p-3">
+                                    <h6 class="card-subtitle mb-2 neon-text">Charges fixes</h6>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-building fa-lg me-2 neon-text"></i>
+                                        <div class="amount-display text-end flex-grow-1">
+                                            <%= numeral(totalChargesFixes).format('0,0.00') %> €
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card glassmorphism neon-card h-100 shadow">
+                                <div class="card-body p-3">
+                                    <h6 class="card-subtitle mb-2 neon-text">Charges variables</h6>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-chart-line fa-lg me-2 neon-text"></i>
+                                        <div class="amount-display text-end flex-grow-1">
+                                            <%= numeral(totalChargesVariables).format('0,0.00') %> €
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card glassmorphism neon-card h-100 shadow">
+                                <div class="card-body p-3">
+                                    <h6 class="card-subtitle mb-2 neon-text">Dépenses</h6>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-shopping-cart fa-lg me-2 neon-text"></i>
+                                        <div class="amount-display text-end flex-grow-1">
+                                            <%= numeral(totalDepenses).format('0,0.00') %> €
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card glassmorphism neon-card h-100 shadow-lg">
+                <div class="card-body d-flex flex-column p-4">
+                    <h6 class="card-subtitle mb-3 neon-text">Montant disponible</h6>
+                    <div class="d-flex align-items-center justify-content-center flex-grow-1">
+                        <i class="fas fa-wallet fa-3x me-3 neon-text"></i>
+                        <div class="amount-total <%= montantDisponible >= 0 ? 'text-success' : 'text-danger' %>">
+                            <%= numeral(montantDisponible).format('0,0.00') %> €
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="card bg-dark text-light h-100 neon-card shadow-lg">
+                <div class="card-body d-flex flex-column p-4">
+                    <h2 class="card-title h4 mb-4">Répartition des dépenses</h2>
+                    <div class="chart-container flex-grow-1">
+                        <% if (categoriesData && categoriesData.length > 0 && categoriesData.some(cat => cat.spent > 0)) { %>
+                            <canvas id="expensesPieChart"></canvas>
+                        <% } else { %>
+                            <div class="d-flex align-items-center justify-content-center h-100">
+                                <div class="text-center text-muted">
+                                    <i class="fas fa-chart-pie fa-3x mb-3"></i>
+                                    <p>Aucune dépense pour la période sélectionnée</p>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-dark text-light h-100 neon-card shadow-lg">
+                <div class="card-body d-flex flex-column p-4">
+                    <h2 class="card-title h4 mb-4">Évolution des dépenses vs Budget</h2>
+                    <div class="chart-container flex-grow-1">
+                        <% if (categoriesData && categoriesData.length > 0 && (categoriesData.some(cat => cat.budgeted > 0) || categoriesData.some(cat => cat.spent > 0))) { %>
+                            <canvas id="expensesVsBudgetChart"></canvas>
+                        <% } else { %>
+                            <div class="d-flex align-items-center justify-content-center h-100">
+                                <div class="text-center text-muted">
+                                    <i class="fas fa-chart-bar fa-3x mb-3"></i>
+                                    <p>Aucune donnée pour la période sélectionnée</p>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card glassmorphism neon-card mb-5 shadow-lg">
+        <div class="card-body p-4">
+            <h2 class="card-title h4 mb-4 neon-text">Détail des budgets par catégorie</h2>
+            <% if (categoriesData && categoriesData.length> 0) { %>
+                <div class="table-responsive">
+                    <table class="table table-hover glassmorphism">
+                        <thead>
+                            <tr>
+                                <th class="neon-text">Catégorie</th>
+                                <th class="text-end neon-text">Budget</th>
+                                <th class="text-end neon-text">Dépenses</th>
+                                <th class="text-end neon-text">Solde</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% categoriesData.forEach(category=> { %>
+                                <tr>
+                                    <td>
+                                        <%= category.name %>
+                                    </td>
+                                    <td class="text-end amount-display">
+                                        <%= numeral(category.budgeted).format('0,0.00') %> €
+                                    </td>
+                                    <td class="text-end amount-display">
+                                        <%= numeral(category.spent).format('0,0.00') %> €
+                                    </td>
+                                    <td class="text-end">
+                                        <% 
+                                        const solde = category.budgeted - category.spent;
+                                        const pourcentageSolde = category.budgeted > 0 ? (solde / category.budgeted) * 100 : 0;
+                                        let textColorClass;
+                                        
+                                        if (pourcentageSolde <= 10) {
+                                            textColorClass = 'text-danger';
+                                        } else if (pourcentageSolde <= 25) {
+                                            textColorClass = 'text-warning';
+                                        } else {
+                                            textColorClass = 'text-success';
+                                        }
+                                        %>
+                                        <span class="amount-display <%= textColorClass %>">
+                                            <%= numeral(solde).format('0,0.00') %> €
+                                        </span>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td><strong class="neon-text">Total</strong></td>
+                                <td class="text-end">
+                                    <strong class="amount-large">
+                                        <%= numeral(totalBudget).format('0,0.00') %> €
+                                    </strong>
+                                </td>
+                                <td class="text-end">
+                                    <strong class="amount-large">
+                                        <%= numeral(totalSpent).format('0,0.00') %> €
+                                    </strong>
+                                </td>
+                                <td class="text-end <%= (totalBudget - totalSpent) >= 0 ? 'text-success' : 'text-danger' %>">
+                                    <strong class="amount-large">
+                                        <%= numeral(totalBudget - totalSpent).format('0,0.00') %> €
+                                    </strong>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-table fa-3x mb-3"></i>
+                    <p>Aucune donnée pour la période sélectionnée</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="card glassmorphism neon-card shadow-lg">
+        <div class="card-body p-4">
+            <h2 class="card-title h4 mb-4 neon-text">Actions</h2>
+            <div class="d-flex flex-wrap justify-content-between gap-3">
+                <button class="btn btn-primary flex-grow-1 py-2" id="resetBudget">Réinitialiser budget</button>
+                <button class="btn btn-primary flex-grow-1 py-2" id="resetCharges">Réinitialiser charges</button>
+                <button class="btn btn-primary flex-grow-1 py-2" id="resetRevenus">Réinitialiser revenus</button>
+                <button class="btn btn-primary flex-grow-1 py-2" id="resetDepenses">Réinitialiser dépenses</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const categoriesData = JSON.parse('<%- JSON.stringify(categoriesData) %>');
+
+        if (categoriesData && categoriesData.length > 0) {
+            // Vérifier si les éléments canvas existent
+            const expensePieCanvas = document.getElementById('expensesPieChart');
+            const expensesVsBudgetCanvas = document.getElementById('expensesVsBudgetChart');
+
+            if (expensePieCanvas && expensesVsBudgetCanvas) {
+                // Graphique en camembert des dépenses par catégorie
+                const expensePieCtx = expensePieCanvas.getContext('2d');
+                if (expensePieCtx) {
+                    new Chart(expensePieCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: categoriesData.map(cat => cat.name),
+                            datasets: [{
+                                data: categoriesData.map(cat => cat.spent),
+                                backgroundColor: [
+                                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+                                    '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384'
+                                ]
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Répartition des dépenses par catégorie'
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Graphique : Évolution des dépenses vs Budget
+                const expensesVsBudgetCtx = expensesVsBudgetCanvas.getContext('2d');
+                if (expensesVsBudgetCtx) {
+                    new Chart(expensesVsBudgetCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: categoriesData.map(cat => cat.name),
+                            datasets: [
+                                {
+                                    label: 'Budget',
+                                    data: categoriesData.map(cat => cat.budgeted),
+                                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Dépenses',
+                                    data: categoriesData.map(cat => cat.spent),
+                                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    borderWidth: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Montant (€)'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Catégories'
+                                    }
+                                }
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Budget vs Dépenses par catégorie'
+                                },
+                                tooltip: {
+                                    mode: 'index',
+                                    intersect: false,
+                                }
+                            },
+                        }
+                    });
+                }
+            }
+        } else {
+            const expensePieChart = document.getElementById('expensesPieChart');
+            const expensesVsBudgetChart = document.getElementById('expensesVsBudgetChart');
+            
+            if (expensePieChart) {
+                expensePieChart.innerHTML = '<div class="text-center p-3">Aucune donnée disponible</div>';
+            }
+            if (expensesVsBudgetChart) {
+                expensesVsBudgetChart.innerHTML = '<div class="text-center p-3">Aucune donnée disponible</div>';
+            }
+        }
+
+        // Gestion des actions de réinitialisation
+        document.querySelectorAll('#resetBudget, #resetCharges, #resetRevenus, #resetDepenses').forEach(button => {
+            button.addEventListener('click', async function(e) {
+                e.preventDefault();
+                const action = this.id;
+                const type = action.replace('reset', '').toLowerCase();
+                const displayName = this.textContent.split(' ')[1];
+                await resetData(type, displayName);
+            });
+        });
+
+        async function resetData(type, displayName) {
+            try {
+                if (confirm(`Êtes-vous sûr de vouloir réinitialiser ${displayName.toLowerCase()} ?`)) {
+                    const response = await fetch(`/reset-${type}`, { 
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (!response.ok) throw new Error('Erreur réseau');
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        alert(`${displayName} réinitialisés avec succès`);
+                        location.reload();
+                    } else {
+                        alert(`Erreur lors de la réinitialisation de ${displayName.toLowerCase()}`);
+                    }
+                }
+            } catch (error) {
+                alert("Une erreur est survenue lors de la réinitialisation");
+            }
+        }
+
+        // Ajout d'un script pour mettre à jour dynamiquement les contraintes min/max
+        document.getElementById('startDate').addEventListener('change', function() {
+            document.getElementById('endDate').min = this.value;
+        });
+
+        document.getElementById('endDate').addEventListener('change', function() {
+            document.getElementById('startDate').max = this.value;
+        });
+    });
+
+    // Auto-suppression du message flash
+document.addEventListener('DOMContentLoaded', function() {
+    const flashMessage = document.getElementById('flashMessage');
+    if (flashMessage) {
+        setTimeout(() => {
+            flashMessage.remove();
+        }, 5000); // Supprime le message après 5 secondes
+    }
+});
+</script>

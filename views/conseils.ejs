@@ -1,0 +1,375 @@
+<div class="oracle-page">
+    <!-- Header avec effet parallaxe -->
+    <div class="oracle-header">
+        <div class="oracle-eye"></div>
+        <h1>Oracle de <%= new Date(startDate).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }) %></h1>
+        
+        <!-- Ajouter la mention IA subtilement sous le titre -->
+        <div class="oracle-wisdom">
+            <i class="fas fa-brain"></i>
+            <span>Prophéties guidées par l'Intelligence Mystique</span>
+        </div>
+
+        <div class="oracle-metrics">
+            <div class="metric <%= montantDisponible >= 0 ? 'positive' : 'negative' %>">
+                <span class="value">
+                    <%= numeral(montantDisponible).format('0,0') %>€
+                </span>
+                <span class="label">Fortune Disponible</span>
+            </div>
+            <div class="metric <%= tauxEpargne >= 0 ? 'positive' : 'negative' %>">
+                <span class="value">
+                    <%= tauxEpargne.toFixed(1) %>%
+                </span>
+                <span class="label">Prospérité</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="oracle-grid">
+        <!-- Colonne de gauche : Prédictions -->
+        <div class="oracle-section predictions">
+            <h2>
+                <i class="fas fa-crystal-ball"></i> 
+                Vision du Futur
+                <span class="divination-source">
+                    <i class="fas fa-microchip"></i>
+                    Oracle Numérique
+                </span>
+            </h2>
+            <div class="next-month-preview">
+                <div class="month-label">
+                    <%= new Date(new Date().setMonth(new Date().getMonth() + 1)).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }) %>
+                </div>
+                <div class="risk-assessment">
+                    <div class="risk-card <%= predictions.risque < 0.3 ? 'low' : 
+                                             predictions.risque < 0.6 ? 'medium' : 
+                                             'high' %>">
+                        <div class="risk-header">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Risque Financier</h3>
+                        </div>
+                        <div class="risk-value">
+                            <div class="risk-meter">
+                                <div class="risk-fill" style="width: <%- Math.max(10, predictions.risque * 100) %>%">
+                                </div>
+                            </div>
+                            <span class="risk-percentage">
+                                <%- Math.max(10, predictions.risque * 100).toFixed(1) %>%
+                                    <span class="risk-label">
+                                        (<%= predictions.risque < 0.3 ? 'Faible' : predictions.risque < 0.6 ? 'Modéré' :
+                                            predictions.risque < 0.8 ? 'Élevé' : 'Critique' %>)
+                                    </span>
+                            </span>
+                        </div>
+                        <div class="risk-details">
+                            <div class="risk-factor">
+                                <span class="label">Ratio charges/revenus:</span>
+                                <span class="value">
+                                    <%= ((totalChargesFixes + totalChargesVariables) / totalRevenus * 100).toFixed(1) %>
+                                        %
+                                </span>
+                            </div>
+                            <div class="risk-factor">
+                                <span class="label">Taux d'endettement:</span>
+                                <span class="value">
+                                    <%= (totalChargesFixes / totalRevenus * 100).toFixed(1) %>%
+                                </span>
+                            </div>
+                            <div class="risk-factor">
+                                <span class="label">Réserve financière:</span>
+                                <span class="value">
+                                    <%= montantDisponible> 0 ?
+                                        `${Math.floor(montantDisponible / (totalChargesFixes + totalChargesVariables))}
+                                        mois de charges` :
+                                        'Aucune réserve' %>
+                                </span>
+                                <span class="risk-info">Nombre de mois couverts par votre épargne</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="prediction-flow">
+                    <div class="current">
+                        <span class="amount">
+                            <%= numeral(montantDisponible).format('0,0') %>€
+                        </span>
+                        <span class="label">Présent</span>
+                    </div>
+                    <div class="flow-arrow">
+                        <i class="fas fa-long-arrow-alt-right"></i>
+                    </div>
+                    <div class="future">
+                        <span class="amount">
+                            <%= numeral(Math.max(montantDisponible * 0.7, 0)).format('0,0') %>€
+                        </span>
+                        <span class="label">Futur</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-predictions">
+                <% Object.entries(predictions.prochaineDepenses)
+                    .filter(([categorie, prediction]) => {
+                        const montantActuel = depensesParCategorie[categorie] || 0;
+                        const montantPrevu = prediction.montant || 0;
+                        return montantActuel > 0 || montantPrevu > 0;
+                    })
+                    .forEach(([categorie, prediction]) => { %>
+                    <div class="category-card">
+                        <div class="category-header">
+                            <i class="fas fa-<%= getIconeCategorie(categorie) %>"></i>
+                            <h3>
+                                <%= capitalizeFirstLetter(categorie) %>
+                            </h3>
+                        </div>
+                        <div class="prediction-details">
+                            <div class="amounts">
+                                <span class="current">
+                                    <%= numeral(depensesParCategorie[categorie] || 0).format('0,0') %>€
+                                </span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span class="predicted">
+                                    <%= numeral(prediction.montant).format('0,0') %>€
+                                </span>
+                            </div>
+                            <div class="trend <%= prediction.variation > 0 ? 'increase' : 'decrease' %>">
+                                <%= prediction.variation> 0 ? '+' : '' %><%= prediction.variation.toFixed(1) %>%
+                            </div>
+
+                            <!-- Ajout de l'explication -->
+                            <div class="category-explanation">
+                                <div class="category-variation">
+                                    <% if (prediction.variation !==0) { %>
+                                        <i
+                                            class="fas <%= prediction.variation > 0 ? 'fa-arrow-up variation-positive' : 'fa-arrow-down variation-negative' %> variation-icon"></i>
+                                        <% } else { %>
+                                            <i class="fas fa-equals variation-neutral variation-icon"></i>
+                                            <% } %>
+                                                <%= getExplicationSaisonniere(categorie, new Date().getMonth() + 1,
+                                                    prediction.variation) %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); %>
+            </div>
+        </div>
+
+        <!-- Colonne de droite : Conseils -->
+        <div class="oracle-section guidance">
+            <div class="guidance-section warnings">
+                <h2>
+                    <i class="fas fa-exclamation-circle"></i> 
+                    Messages Divins
+                    <span class="divination-precision">Révélations Personnalisées</span>
+                </h2>
+                <div class="scrollable-content">
+                    <% predictions.conseils
+                        .filter(c => c.priorite === 'urgente' || c.priorite === 'haute')
+                        .forEach(conseil => { %>
+                        <div class="divine-message <%= conseil.priorite %>">
+                            <div class="message-header">
+                                <% const iconMapping = {
+                                    '💎': 'fa-gem',
+                                    '⚠️': 'fa-exclamation-triangle',
+                                    '🚨': 'fa-exclamation-circle',
+                                    '📈': 'fa-chart-line',
+                                    '⚡': 'fa-bolt',
+                                    '🏦': 'fa-university',
+                                    '🔍': 'fa-search-dollar',
+                                    '💰': 'fa-coins'
+                                }; const iconClass = conseil.titre.split(' ')[0];
+                                const faIcon = iconMapping[iconClass] || iconClass; %>
+                                <i class="fas <%= faIcon %>"></i>
+                                <h3><%- conseil.titre %></h3>
+                            </div>
+
+                            <div class="divine-content">
+                                <div class="prophecy-section">
+                                    <p class="prophecy"><%= conseil.description %></p>
+                                </div>
+
+                                <div class="divine-actions">
+                                    <% conseil.action.split('\n').forEach(line => { %>
+                                    <div class="action"><%= line %></div>
+                                    <% }); %>
+                            </div>
+                        </div>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+
+        <!-- Conseils d'optimisation -->
+        <div class="guidance-section wisdom">
+            <h2><i class="fas fa-lightbulb"></i> Sagesse Divine</h2>
+            <div class="scrollable-content">
+                <% predictions.conseils
+                    .filter(c => c.priorite === 'moyenne' || c.priorite === 'info')
+                    .forEach(conseil => { %>
+                    <div class="divine-message">
+                        <div class="message-header">
+                            <% const iconMapping = {
+                                '💎': 'fa-gem',
+                                '⚠️': 'fa-exclamation-triangle',
+                                '🚨': 'fa-exclamation-circle',
+                                '📈': 'fa-chart-line',
+                                '⚡': 'fa-bolt',
+                                '🏦': 'fa-university',
+                                '🔍': 'fa-search-dollar',
+                                '💰': 'fa-coins'
+                            }; const iconClass = conseil.titre.split(' ')[0];
+                            const faIcon = iconMapping[iconClass] || iconClass; %>
+                            <i class="fas <%= faIcon %>"></i>
+                            <h3><%- conseil.titre %></h3>
+                        </div>
+                        <p class="prophecy"><%= conseil.description %></p>
+                        <div class="divine-actions">
+                            <% conseil.action.split('\n').forEach(line => { %>
+                            <div class="action"><%= line %></div>
+                            <% }); %>
+                        </div>
+                    </div>
+                    <% }); %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ajouter ces styles CSS -->
+<style>
+.oracle-ia-notice {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    margin: 1rem auto;
+    max-width: 800px;
+    text-align: center;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.oracle-ia-notice i {
+    color: #9f86ff;
+}
+
+.ia-powered-tag {
+    font-size: 0.8em;
+    background: linear-gradient(45deg, #6b46c1, #9f86ff);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+.ia-powered-tag i {
+    margin-right: 0.3rem;
+}
+
+.ia-precision {
+    font-size: 0.75em;
+    opacity: 0.8;
+    display: block;
+    margin-top: 0.2rem;
+}
+
+/* Ajouter un effet de pulsation subtil sur les icônes IA */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.oracle-ia-notice i,
+.ia-powered-tag i {
+    animation: pulse 2s infinite ease-in-out;
+}
+
+.oracle-wisdom {
+    background: rgba(255, 215, 0, 0.03);
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    padding: 0.7rem 1.5rem;
+    margin: 1rem auto;
+    max-width: 600px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+}
+
+.oracle-wisdom i {
+    color: var(--gold-primary);
+    font-size: 0.9rem;
+}
+
+.oracle-wisdom span {
+    color: var(--gold-light);
+    font-size: 0.9rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px;
+}
+
+.divination-source {
+    font-size: 0.8rem;
+    background: linear-gradient(45deg, 
+        rgba(255, 215, 0, 0.1), 
+        rgba(255, 215, 0, 0.05));
+    border: 1px solid var(--border-gold);
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    margin-left: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--gold-light);
+}
+
+.divination-source i {
+    font-size: 0.7rem;
+    color: var(--gold-primary);
+}
+
+.divination-precision {
+    font-size: 0.75rem;
+    color: var(--gold-light);
+    opacity: 0.8;
+    display: block;
+    margin-top: 0.3rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px;
+}
+
+/* Animation subtile */
+@keyframes mysticPulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+.oracle-wisdom i,
+.divination-source i {
+    animation: mysticPulse 3s infinite ease-in-out;
+}
+
+/* Adaptation responsive */
+@media (max-width: 768px) {
+    .oracle-wisdom {
+        margin: 1rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .divination-source {
+        margin: 0.5rem 0 0 0;
+        font-size: 0.7rem;
+    }
+}
+</style>
+
+<!-- Ajouter ces meta tags dans le head pour assurer le responsive -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">

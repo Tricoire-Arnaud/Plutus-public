@@ -1,0 +1,113 @@
+/* Styles de base */
+body {
+    font-family: 'Cinzel', serif;
+    background: linear-gradient(135deg, var(--obsidian), var(--obsidian-light));
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6,
+.container h1, 
+.container h2, 
+.container h3,
+.container h4,
+.container h5,
+.container h6,
+.card-title,
+.modal-title {
+    font-family: 'Cinzel', serif !important;
+    color: var(--gold-primary) !important;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.2) !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Alerts */
+.alert {
+    background: linear-gradient(145deg, rgba(10, 9, 8, 0.95), rgba(26, 24, 23, 0.95)) !important;
+    border: 1px solid var(--border-gold) !important;
+    border-radius: 12px !important;
+    color: var(--text) !important;
+    padding: 1rem 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1) !important;
+}
+
+/* Progress Bar */
+.progress {
+    background: rgba(10, 9, 8, 0.7) !important;
+    border: 1px solid var(--border-gold) !important;
+    height: 20px !important;
+    overflow: hidden !important;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--gold-primary), var(--gold-dark)) !important;
+    transition: width 0.6s ease !important;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3) !important;
+}
+
+/* Styles globaux pour les montants */
+.amount-display {
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px;
+}
+
+.amount-large {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.amount-total {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(to right, var(--gold-primary), var(--gold-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Montants dans les tableaux */
+.table td[data-label*="Montant"],
+.table td[data-label*="montant"],
+.table td[data-label*="Total"],
+.table td[data-label*="total"],
+.table td[data-label*="Solde"],
+.table td[data-label*="solde"] {
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: 'Cinzel', serif;
+}
+
+/* Montants dans les cards */
+.card .stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    font-family: 'Cinzel', serif;
+    margin: 1rem 0;
+}
+
+/* Montants dans le dashboard */
+.dashboard-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    letter-spacing: 1px;
+}
+
+/* Montants dans les formulaires */
+.form-control[type="number"] {
+    font-size: 1.3rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px;
+}
+
+/* Amélioration de la lisibilité des totaux */
+.total-row td {
+    font-size: 1.4rem !important;
+    font-weight: 700 !important;
+    background: linear-gradient(145deg, rgba(10, 9, 8, 0.95), rgba(26, 24, 23, 0.95));
+} 

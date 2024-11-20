@@ -1,0 +1,179 @@
+<div class="container mt-5">
+    <!-- En-tête -->
+    <div class="text-center mb-5">
+        <i class="fas fa-user-plus fa-4x mb-3 text-gold"></i>
+        <h1 class="display-4">Création du Compte</h1>
+        <p class="lead text-gold">Rejoignez le temple de la prospérité</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card bg-dark text-light">
+                <div class="card-body p-5">
+                    <% if (typeof error !== 'undefined' && error) { %>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <%= error %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+
+                    <form action="<%= action %>" method="POST" class="needs-validation" novalidate>
+                        <% fields.forEach(field => { %>
+                            <div class="mb-4">
+                                <label class="form-label" for="<%= field.name %>">
+                                    <%= field.label %> <% if(field.required) { %><span class="text-danger">*</span><% } %>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas <%= field.type === 'email' ? 'fa-envelope' : field.type === 'password' ? 'fa-lock' : 'fa-user' %>"></i>
+                                    </span>
+                                    <input 
+                                        type="<%= field.type %>" 
+                                        name="<%= field.name %>" 
+                                        id="<%= field.name %>" 
+                                        class="form-control"
+                                        value="<%= field.type !== 'password' && typeof locals[field.name] !== 'undefined' ? locals[field.name] : '' %>"
+                                        <%= field.required ? 'required' : '' %>
+                                    >
+                                    <% if(field.type === 'password') { %>
+                                        <button class="btn btn-outline-secondary" type="button" 
+                                                onclick="togglePassword('<%= field.name %>')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    <% } %>
+                                </div>
+                                <% if(field.type === 'password' && field.name === 'password') { %>
+                                    <div class="password-requirements mt-2 small text-muted">
+                                        <div><i class="fas fa-check-circle"></i> Minimum 8 caractères</div>
+                                        <div><i class="fas fa-check-circle"></i> Une lettre majuscule</div>
+                                        <div><i class="fas fa-check-circle"></i> Une lettre minuscule</div>
+                                        <div><i class="fas fa-check-circle"></i> Un chiffre</div>
+                                        <div><i class="fas fa-check-circle"></i> Un caractère spécial</div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% }); %>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-user-plus me-2"></i>Créer mon compte
+                        </button>
+                    </form>
+                    <p class="text-center mt-4 text-muted">
+                        Déjà un compte ? <a href="/login" class="text-gold">Se connecter</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.text-gold {
+    color: var(--gold-primary) !important;
+}
+
+.card {
+    border: 1px solid var(--border-gold);
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+    border: none;
+}
+
+.form-control:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+
+.input-group-text {
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+    border: none;
+    color: var(--obsidian);
+}
+
+.password-requirements div {
+    margin-bottom: 0.25rem;
+}
+
+.password-requirements div.text-success i {
+    color: #28a745;
+}
+
+/* Ajustements pour les boutons de visibilité du mot de passe */
+.input-group {
+    position: relative;
+}
+
+.input-group .form-control {
+    padding-right: 46px; /* Espace pour le bouton */
+}
+
+.input-group .btn-outline-secondary {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 4;
+    border-radius: 0 4px 4px 0;
+    border-color: var(--border-gold);
+    color: var(--gold-primary);
+    min-width: 46px;
+    padding: 0.375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-group .btn-outline-secondary:hover,
+.input-group .btn-outline-secondary:focus {
+    background-color: rgba(255, 215, 0, 0.1);
+    border-color: var(--gold-primary);
+    color: var(--gold-primary);
+}
+
+/* Ajustements pour petits écrans */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .btn:not(.btn-outline-secondary) {
+        margin-bottom: 0.5rem;
+    }
+}
+</style>
+
+<script>
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const type = input.type === 'password' ? 'text' : 'password';
+    input.type = type;
+    const icon = event.currentTarget.querySelector('i');
+    icon.className = `fas fa-${type === 'password' ? 'eye' : 'eye-slash'}`;
+}
+
+// Validation en temps réel du mot de passe
+document.getElementById('password').addEventListener('input', function(e) {
+    const password = e.target.value;
+    const requirements = document.querySelectorAll('.password-requirements div');
+    
+    requirements[0].classList.toggle('text-success', password.length >= 8);
+    requirements[1].classList.toggle('text-success', /[A-Z]/.test(password));
+    requirements[2].classList.toggle('text-success', /[a-z]/.test(password));
+    requirements[3].classList.toggle('text-success', /\d/.test(password));
+    requirements[4].classList.toggle('text-success', /[^A-Za-z0-9]/.test(password));
+});
+
+// Validation de la correspondance des mots de passe
+document.querySelector('form').addEventListener('submit', function(e) {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    if (password !== confirmPassword) {
+        e.preventDefault();
+        alert('Les mots de passe ne correspondent pas');
+    }
+});
+</script>

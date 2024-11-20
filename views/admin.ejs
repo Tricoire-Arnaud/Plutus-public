@@ -1,0 +1,241 @@
+<!-- Container principal avec padding -->
+<div class="container-fluid py-4">
+    <!-- Titre de la page avec effet néon -->
+    <h1 class="mb-4 neon-text">Panel d'Administration</h1>
+
+    <!-- Grille principale avec espacement -->
+    <div class="row g-4 mb-4">
+        <!-- Section des statistiques globales -->
+        <div class="col-md-6">
+            <!-- Carte avec effet glassmorphism et néon -->
+            <div class="card glassmorphism neon-card">
+                <div class="card-body">
+                    <h2 class="card-title h5 mb-3 neon-text">Statistiques Globales</h2>
+                    <!-- Grille 2x2 pour les statistiques -->
+                    <div class="row g-3">
+                        <!-- Statistique utilisateurs -->
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <!-- Icône utilisateurs -->
+                                <i class="fas fa-users fa-2x me-3 neon-text"></i>
+                                <div>
+                                    <h6 class="mb-0 neon-text">Utilisateurs</h6>
+                                    <!-- Affichage dynamique du nombre d'utilisateurs -->
+                                    <h4 class="mb-0"><%= totalUsers %></h4>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Statistique budgets -->
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-piggy-bank fa-2x me-3 neon-text"></i>
+                                <div>
+                                    <h6 class="mb-0 neon-text">Budgets</h6>
+                                    <h4 class="mb-0"><%= totalBudgets %></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-receipt fa-2x me-3 neon-text"></i>
+                                <div>
+                                    <h6 class="mb-0 neon-text">Dépenses</h6>
+                                    <h4 class="mb-0"><%= totalExpenses %></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-hand-holding-usd fa-2x me-3 neon-text"></i>
+                                <div>
+                                    <h6 class="mb-0 neon-text">Revenus</h6>
+                                    <h4 class="mb-0"><%= totalIncomes %></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section activité récente -->
+        <div class="col-md-6">
+            <div class="card glassmorphism neon-card">
+                <div class="card-body">
+                    <h2 class="card-title h5 mb-3 neon-text">Activité Récente</h2>
+                    <!-- Tableau responsive pour les activités -->
+                    <div class="table-responsive">
+                        <table class="table table-hover glassmorphism">
+                            <!-- En-tête du tableau -->
+                            <thead>
+                                <tr>
+                                    <th class="neon-text">Utilisateur</th>
+                                    <th class="neon-text">Action</th>
+                                    <th class="neon-text">Date</th>
+                                </tr>
+                            </thead>
+                            <!-- Corps du tableau avec boucle sur les activités -->
+                            <tbody>
+                                <!-- Condition pour vérifier s'il y a des activités -->
+                                <% if (recentActivities && recentActivities.length > 0) { %>
+                                    <!-- Boucle sur chaque activité -->
+                                    <% recentActivities.forEach(activity => { %>
+                                        <tr>
+                                            <td><%= activity.user %></td>
+                                            <td><%= activity.action %></td>
+                                            <td><%= activity.date %></td>
+                                        </tr>
+                                    <% }); %>
+                                <% } else { %>
+                                    <!-- Message si aucune activité -->
+                                    <tr>
+                                        <td colspan="3" class="text-center">Aucune activité récente</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section des statistiques détaillées -->
+        <div class="col-12">
+            <div class="card glassmorphism neon-card">
+                <div class="card-body">
+                    <h2 class="card-title h5 mb-3 neon-text">Statistiques Détaillées</h2>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="card glassmorphism">
+                                <div class="card-body">
+                                    <h6 class="neon-text">Moyenne des Budgets</h6>
+                                    <h4><%= detailedStats.moyenneBudgets %> €</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card glassmorphism">
+                                <div class="card-body">
+                                    <h6 class="neon-text">Moyenne des Dépenses</h6>
+                                    <h4><%= detailedStats.moyenneDepenses %> €</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card glassmorphism">
+                                <div class="card-body">
+                                    <h6 class="neon-text">Moyenne des Revenus</h6>
+                                    <h4><%= detailedStats.moyenneRevenus %> €</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section gestion des utilisateurs -->
+    <div class="card glassmorphism neon-card mb-4">
+        <div class="card-body">
+            <h2 class="card-title h5 mb-3 neon-text">Gestion des Utilisateurs</h2>
+            <!-- Bouton d'ajout d'utilisateur -->
+            <div class="mb-3">
+                <button class="btn btn-primary add-user" id="addUserBtn">
+                    <i class="fas fa-user-plus me-2"></i>Ajouter un utilisateur
+                </button>
+            </div>
+            <!-- Barre de recherche -->
+            <div class="mb-3">
+                <input type="text" class="form-control glassmorphism" id="userSearch" placeholder="Rechercher un utilisateur...">
+            </div>
+            <!-- Tableau des utilisateurs -->
+            <div class="table-responsive-sm">
+                <table class="table table-hover glassmorphism">
+                    <thead>
+                        <tr>
+                            <th class="neon-text">ID</th>
+                            <th class="neon-text">Nom</th>
+                            <th class="neon-text">Email</th>
+                            <th class="neon-text">Date d'inscription</th>
+                            <th class="neon-text">Rôle</th>
+                            <th class="neon-text">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(user => { %>
+                            <tr data-role="<%= user.role %>">
+                                <td><%= user.id %></td>
+                                <td><%= user.name %></td>
+                                <td><%= user.email %></td>
+                                <td><%= user.createdAt %></td>
+                                <td><%= user.role %></td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" 
+                                                class="btn btn-sm btn-primary edit-user" 
+                                                data-user-id="<%= user.id %>"
+                                                data-username="<%= user.name %>"
+                                                data-role="<%= user.role %>">
+                                            <i class="fas fa-edit"></i> Éditer
+                                        </button>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-danger delete-user" 
+                                                data-user-id="<%= user.id %>">
+                                            <i class="fas fa-trash"></i> Supprimer
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Indicateur de chargement -->
+<div id="loading-indicator" class="position-fixed top-50 start-50 translate-middle" style="display: none; z-index: 9999;">
+    <!-- Spinner de chargement -->
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Chargement...</span>
+    </div>
+</div>
+
+<!-- Modal pour l'édition d'utilisateur -->
+<div class="modal fade" id="editUserModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier l'utilisateur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm">
+                    <input type="hidden" id="editUserId" name="id">
+                    <div class="mb-3">
+                        <label for="editUsername" class="form-label">Nom d'utilisateur</label>
+                        <input type="text" class="form-control" id="editUsername" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editRole" class="form-label">Rôle</label>
+                        <select class="form-select" id="editRole" name="role">
+                            <option value="user">Utilisateur</option>
+                            <option value="admin">Administrateur</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" id="saveUserEdit">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Inclusion des scripts nécessaires -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/admin.js"></script>

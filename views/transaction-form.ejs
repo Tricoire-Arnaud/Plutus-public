@@ -1,0 +1,51 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4 text-primary">Ajouter une transaction</h2>
+                    <form action="/transactions" method="POST" id="transactionForm">
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Type de transaction</label>
+                            <select id="type" name="type" required class="form-select">
+                                <option value="expense">Dépense</option>
+                                <option value="income">Rentrée d'argent</option>
+                                <option value="fixed_expense">Charge fixe</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Montant</label>
+                            <div class="input-group">
+                                <span class="input-group-text">€</span>
+                                <input id="amount" name="amount" type="number" step="0.01" required class="form-control" placeholder="Montant">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Catégorie</label>
+                            <select id="category" name="category" required class="form-select">
+                                <% if (categories && categories.length > 0) { %>
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.id %>"><%= category.name %></option>
+                                    <% }) %>
+                                <% } else { %>
+                                    <option disabled>Aucune catégorie disponible</option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input id="date" name="date" type="date" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea id="description" name="description" rows="3" class="form-control" placeholder="Description"></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Ajouter la transaction</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

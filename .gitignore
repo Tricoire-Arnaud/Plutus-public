@@ -1,0 +1,73 @@
+# Dépendances
+node_modules/
+
+dataGenerator.js
+models/checkpoints/
+models/trained
+IAPredictor.js
+IAPredictor.js.map
+IAPredictor.js.map.gz
+IAPredictor.js.gz
+initIA.js
+initIA.js.map
+initIA.js.map.gz
+initIA.js.gz
+
+
+# Fichiers de logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Fichiers d'environnement
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Dossiers de build
+dist/
+build/
+
+# Fichiers temporaires
+tmp/
+temp/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers d'éditeur
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Fichiers de couverture de tests
+coverage/
+
+# Fichiers de base de données SQLite (si utilisés)
+*.sqlite
+
+# Fichiers de sauvegarde
+*.bak
+*.backup
+
+# Fichiers de configuration spécifiques à l'utilisateur
+config.js
+
+# Dossiers de cache
+.cache/
+.npm/
+
+# Autres
+*.pid
+*.seed
+*.pid.lock
+
+# Fichiers spécifiques à votre projet (à adapter si nécessaire)
+# data/
+# public/uploads/

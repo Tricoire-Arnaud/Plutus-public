@@ -1,0 +1,260 @@
+<meta charset="UTF-8">
+<div class="container mt-4">
+    <h1>Gestion des dépenses</h1>
+
+    <% if (flashMessage) { %>
+        <div class="alert alert-info">
+            <%= flashMessage %>
+        </div>
+    <% } %>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3>Nouvelle dépense</h3>
+            <form action="/depenses" method="POST">
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Montant</label>
+                    <input type="number" class="form-control" id="amount" name="amount" step="0.01"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Catégorie</label>
+                    <select class="form-select" id="category" name="category" required>
+                        <% categories.forEach(category=> { %>
+                            <option value="<%= category.id %>">
+                                <%= category.name %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description"
+                        rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Ajouter la dépense</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3>Liste des dépenses</h3>
+            <div class="mb-3">
+                <label for="filter-category" class="form-label neon-text">
+                    <i class="fas fa-filter me-2"></i>Filtrer par catégorie
+                </label>
+                <select class="form-select glassmorphism" id="filter-category">
+                    <option value="">Toutes les catégories</option>
+                    <% categories.forEach(category => { %>
+                        <option value="<%= category.id %>">
+                            <%= category.name %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <div class="table-responsive">
+                    <% if (expenses && expenses.length > 0) { %>
+                        <table class="table table-sm table-hover" id="expenses-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Catégorie</th>
+                                    <th>Montant</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% expenses.forEach(expense=> { %>
+                                    <tr data-category="<%= expense.category_id %>">
+                                        <td>
+                                            <%= new Date(expense.date).toLocaleDateString() %>
+                                        </td>
+                                        <td>
+                                            <%= categories.find(cat=> cat.id === expense.category_id)?.name
+                                                || 'Catégorie inconnue' %>
+                                        </td>
+                                        <td>
+                                            <%= parseFloat(expense.amount).toFixed(2) %> €
+                                        </td>
+                                        <td>
+                                            <%= decodeURIComponent(expense.description || '') %>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex flex-column flex-sm-row gap-2">
+                                                <button class="btn btn-sm btn-primary edit-expense"
+                                                    data-id="<%= expense.id %>"
+                                                    data-amount="<%= expense.amount %>"
+                                                    data-category="<%= expense.category_id %>"
+                                                    data-date="<%= expense.date %>"
+                                                    data-description="<%= expense.description %>">
+                                                    Modifier
+                                                </button>
+                                                <form action="/depenses/<%= expense.id %>?_method=DELETE"
+                                                    method="POST">
+                                                    <button type="submit"
+                                                        class="btn btn-sm btn-danger w-100"
+                                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette dépense ?')">
+                                                        Supprimer
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <div class="text-center py-4">
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Aucune dépense n'a été enregistrée pour le moment.
+                            </p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editExpenseModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier la dépense</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editExpenseForm" action="/depenses" method="POST">
+                        <input type="hidden" name="_method" value="PUT">
+                        <div class="mb-3">
+                            <label for="editAmount" class="form-label">Montant</label>
+                            <input type="number" class="form-control" id="editAmount" name="amount"
+                                step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCategory" class="form-label">Catégorie</label>
+                            <select class="form-select" id="editCategory" name="category" required>
+                                <% categories.forEach(category=> { %>
+                                    <option value="<%= category.id %>">
+                                        <%= category.name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDate" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="editDate" name="date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="editDescription" name="description"
+                                rows="3"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Enregistrer les
+                                modifications</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Gestion du filtre des catégories
+            document.getElementById('filter-category').addEventListener('change', function () {
+                const selectedCategory = this.value;
+                const rows = document.querySelectorAll('#expenses-table tbody tr');
+
+                rows.forEach(row => {
+                    if (selectedCategory === '' || row.getAttribute('data-category') === selectedCategory) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // Gestion de la modal de modification
+            const editButtons = document.querySelectorAll('.edit-expense');
+            const editModal = new bootstrap.Modal(document.getElementById('editExpenseModal'));
+            const editForm = document.getElementById('editExpenseForm');
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const expenseId = this.getAttribute('data-id');
+                    const amount = this.getAttribute('data-amount');
+                    const category = this.getAttribute('data-category');
+                    const date = new Date(this.getAttribute('data-date')).toISOString().split('T')[0];
+                    const description = decodeURIComponent(this.getAttribute('data-description') || '');
+
+                    // Mettre à jour l'action du formulaire
+                    editForm.action = `/depenses/${expenseId}?_method=PUT`;
+
+                    // Remplir les champs
+                    document.getElementById('editAmount').value = amount;
+                    document.getElementById('editCategory').value = category;
+                    document.getElementById('editDate').value = date;
+                    document.getElementById('editDescription').value = description;
+
+                    editModal.show();
+                });
+            });
+        });
+
+        // Auto-suppression du message flash
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessage = document.querySelector('.alert-info');
+            if (flashMessage) {
+                setTimeout(() => {
+                    flashMessage.remove();
+                }, 5000); // Supprime le message après 5 secondes
+            }
+        });
+    </script>
+
+    <style>
+        /* Style pour le select de filtrage */
+        .form-select.glassmorphism {
+            background: linear-gradient(145deg, rgba(10, 9, 8, 0.95), rgba(26, 24, 23, 0.95));
+            border: 1px solid var(--border-gold);
+            color: var(--text);
+            font-family: 'Cinzel', serif;
+            padding: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-select.glassmorphism:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            outline: none;
+        }
+
+        .form-select.glassmorphism option {
+            background-color: var(--obsidian);
+            color: var(--text);
+            padding: 10px;
+        }
+
+        .form-select.glassmorphism:hover {
+            border-color: var(--gold-primary);
+        }
+
+        /* Style pour le label */
+        .neon-text {
+            color: var(--gold-primary);
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+        }
+    </style>
+</div>

@@ -1,0 +1,127 @@
+/* Animations globales */
+@keyframes float {
+    0%, 100% { 
+        transform: translate3d(0, 0, 0); 
+    }
+    50% { 
+        transform: translate3d(0, -10px, 0);
+    }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+    70% { box-shadow: 0 0 0 30px rgba(255, 215, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+}
+
+@keyframes divine-shine {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+@keyframes shimmerBorder {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes testimonialGlow {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.7; }
+}
+
+@keyframes circleTransform {
+    0% { transform: scale(0.9) rotate(-10deg); }
+    50% { transform: scale(1.1) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes corePulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 
+            0 0 60px var(--gold-primary),
+            0 0 120px rgba(255, 215, 0, 0.4);
+    }
+    50% { 
+        transform: scale(1.2);
+        box-shadow: 
+            0 0 80px var(--gold-primary),
+            0 0 160px rgba(255, 215, 0, 0.6);
+    }
+}
+
+@keyframes rotateBeam {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes rotateRing {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rotateSymbols {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes excellencePulse {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+@keyframes particleOrbit {
+    0% {
+        transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes globalPulse {
+    0%, 100% { 
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+    50% { 
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes raysPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+}
+
+/* Utiliser les propriétés performantes */
+.animated-element {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.recommendation-card:hover,
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1);
+}

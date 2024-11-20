@@ -1,0 +1,88 @@
+/* Form Controls */
+.form-control, .form-select {
+    background: rgba(10, 9, 8, 0.7) !important;
+    border: 1px solid var(--border-gold) !important;
+    color: var(--text) !important;
+    border-radius: 8px !important;
+    font-family: 'Cinzel', serif;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--gold-primary) !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2) !important;
+}
+
+.form-control[type="number"] {
+    font-size: 1.3rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px;
+}
+
+/* Styles pour Flatpickr */
+.flatpickr-calendar {
+    background: linear-gradient(145deg, rgba(10, 9, 8, 0.98), rgba(26, 24, 23, 0.98)) !important;
+    border: 1px solid var(--border-gold) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+    border-radius: 12px !important;
+}
+
+.flatpickr-day {
+    color: var(--text) !important;
+    border-radius: 8px !important;
+}
+
+.flatpickr-day:hover {
+    background: rgba(255, 215, 0, 0.1) !important;
+    border-color: var(--gold-primary) !important;
+}
+
+.flatpickr-day.selected {
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)) !important;
+    border-color: var(--gold-primary) !important;
+    color: var(--obsidian) !important;
+}
+
+.flatpickr-months .flatpickr-month,
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-weekday {
+    color: var(--gold-primary) !important;
+}
+
+.flatpickr-prev-month, .flatpickr-next-month {
+    color: var(--gold-primary) !important;
+}
+
+.flatpickr-prev-month:hover, .flatpickr-next-month:hover {
+    color: var(--gold-light) !important;
+}
+
+.flatpickr-time {
+    border-top: 1px solid var(--border-gold) !important;
+}
+
+.flatpickr-time input,
+.flatpickr-time .flatpickr-am-pm {
+    color: var(--text) !important;
+}
+
+.numInputWrapper:hover {
+    background: rgba(255, 215, 0, 0.1) !important;
+}
+
+/* Form groups et labels */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    color: var(--gold-light);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* Input groups */
+.input-group-text {
+    background: linear-gradient(145deg, rgba(10, 9, 8, 0.9), rgba(26, 24, 23, 0.9));
+    border-color: var(--border-gold);
+    color: var(--gold-primary);
+} 

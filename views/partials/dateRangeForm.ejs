@@ -1,0 +1,19 @@
+<form action="" method="GET" class="mb-4">
+    <div class="row g-3 align-items-center">
+        <div class="col-auto">
+            <label for="startDate" class="col-form-label">Du</label>
+        </div>
+        <div class="col-auto">
+            <input type="date" id="startDate" name="startDate" class="form-control" value="<%= locals.startDate || '' %>">
+        </div>
+        <div class="col-auto">
+            <label for="endDate" class="col-form-label">au</label>
+        </div>
+        <div class="col-auto">
+            <input type="date" id="endDate" name="endDate" class="form-control" value="<%= locals.endDate || '' %>">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </div>
+    </div>
+</form>

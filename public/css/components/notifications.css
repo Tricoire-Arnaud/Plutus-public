@@ -1,0 +1,90 @@
+#notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1030;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.notification {
+    min-width: 300px;
+    max-width: 450px;
+    background: linear-gradient(145deg, rgba(10, 9, 8, 0.95), rgba(26, 24, 23, 0.95));
+    border: 1px solid var(--border-gold);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    pointer-events: auto;
+    overflow: hidden;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text);
+}
+
+.notification i:not(.fa-times) {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.notification-success i:not(.fa-times) { color: #4CAF50; }
+.notification-error i:not(.fa-times) { color: #f44336; }
+.notification-warning i:not(.fa-times) { color: #ff9800; }
+.notification-info i:not(.fa-times) { color: var(--gold-primary); }
+
+.notification-close {
+    background: none;
+    border: none;
+    color: var(--text);
+    opacity: 0.7;
+    cursor: pointer;
+    padding: 0;
+    margin-left: auto;
+    transition: opacity 0.3s ease;
+}
+
+.notification-close:hover {
+    opacity: 1;
+}
+
+/* Animations */
+.animate__animated {
+    animation-duration: 0.5s;
+}
+
+.animate__fadeInDown {
+    animation-name: notificationFadeInDown;
+}
+
+.animate__fadeOutUp {
+    animation-name: notificationFadeOutUp;
+}
+
+@keyframes notificationFadeInDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -20px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes notificationFadeOutUp {
+    from {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        opacity: 0;
+        transform: translate3d(0, -20px, 0);
+    }
+} 

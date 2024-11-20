@@ -1,0 +1,112 @@
+<div class="container mt-5">
+    <h1 class="mb-4 text-primary">Politique de Confidentialité de Plutus</h1>
+
+    <p>Dernière mise à jour : <%= new Date().toLocaleDateString('fr-FR') %></p>
+
+    <h2 class="mt-4">1. Introduction</h2>
+    <p>Plutus, votre application divine de gestion financière, s'engage à protéger vos informations personnelles avec le même soin qu'Hadès protège ses trésors. Cette politique de confidentialité détaille la manière dont nous collectons, utilisons et protégeons vos données.</p>
+
+    <h2 class="mt-4">2. Informations collectées</h2>
+    <p>Nous collectons les informations suivantes :</p>
+    <ul>
+        <li>Informations d'identification : nom d'utilisateur, adresse e-mail et mot de passe crypté</li>
+        <li>Données financières : revenus, dépenses, charges fixes et variables, emprunts et remboursements</li>
+        <li>Données de budgétisation : budgets par catégorie et objectifs financiers</li>
+        <li>Données de session : dates de connexion et préférences utilisateur</li>
+        <li>Données d'analyse : tendances de dépenses, prédictions financières et recommandations de l'Oracle</li>
+        <li>Données de catégorisation : répartition des dépenses par catégorie (alimentation, transport, loisirs, etc.)</li>
+    </ul>
+
+    <h2 class="mt-4">3. Utilisation des informations</h2>
+    <p>Vos informations sont utilisées pour :</p>
+    <ul>
+        <li>Fournir une analyse détaillée de votre situation financière via notre Oracle</li>
+        <li>Générer des conseils financiers personnalisés basés sur l'IA</li>
+        <li>Calculer vos tendances de dépenses et votre taux d'épargne</li>
+        <li>Gérer vos emprunts et suivre vos remboursements</li>
+        <li>Analyser les risques financiers et générer des alertes préventives</li>
+        <li>Optimiser vos budgets par catégorie</li>
+        <li>Générer des graphiques et tableaux de bord personnalisés</li>
+    </ul>
+
+    <h2 class="mt-4">4. Protection des données</h2>
+    <p>Nous protégeons vos données avec :</p>
+    <ul>
+        <li>Chiffrement des mots de passe avec bcrypt</li>
+        <li>Sessions sécurisées avec express-session</li>
+        <li>Protection contre les attaques XSS et CSRF</li>
+        <li>Stockage sécurisé dans une base de données PostgreSQL</li>
+        <li>Authentification requise pour accéder aux données sensibles</li>
+        <li>Chiffrement des données financières sensibles</li>
+        <li>Sauvegardes régulières et sécurisées</li>
+    </ul>
+
+    <h2 class="mt-4">5. Intelligence Artificielle et Prédictions</h2>
+    <p>Notre Oracle Financier utilise l'IA pour :</p>
+    <ul>
+        <li>Analyser vos habitudes financières</li>
+        <li>Prédire les tendances futures de dépenses</li>
+        <li>Générer des recommandations personnalisées</li>
+        <li>Évaluer les risques financiers</li>
+        <li>Optimiser vos objectifs d'épargne</li>
+    </ul>
+
+    <h2 class="mt-4">6. Vos droits</h2>
+    <p>Vous disposez des droits suivants :</p>
+    <ul>
+        <li>Accéder à toutes vos données personnelles et financières</li>
+        <li>Modifier vos informations via votre page profil</li>
+        <li>Supprimer votre compte et toutes les données associées</li>
+        <li>Exporter vos données financières</li>
+        <li>Réinitialiser vos données de budget, charges, revenus et dépenses</li>
+    </ul>
+
+    <h2 class="mt-4">7. Partage des données</h2>
+    <p>Nous ne partageons jamais vos données avec des tiers. Vos informations financières restent aussi secrètes que les trésors de l'Olympe.</p>
+
+    <h2 class="mt-4">8. Conservation des données</h2>
+    <p>Vos données sont conservées :</p>
+    <ul>
+        <li>Données de compte : tant que votre compte est actif</li>
+        <li>Données financières : 24 mois glissants pour les analyses</li>
+        <li>Données de prédiction : 6 mois pour l'amélioration de l'IA</li>
+        <li>Logs de connexion : 30 jours</li>
+    </ul>
+
+    <h2 class="mt-4">9. Modifications de la politique</h2>
+    <p>Nous nous réservons le droit de mettre à jour cette politique. Les modifications importantes vous seront notifiées par email ou via l'application.</p>
+
+
+    <div class="mt-5 mb-4 text-center">
+        <a href="/" class="btn btn-primary">Retour à l'accueil</a>
+    </div>
+</div>
+
+<style>
+.container h2 {
+    color: var(--gold-primary);
+    margin-top: 2rem;
+}
+
+.container ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.container ul li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.container ul li::before {
+    content: "•";
+    color: var(--gold-primary);
+    position: absolute;
+    left: 0;
+}
+
+.btn-primary {
+    margin-top: 2rem;
+}
+</style>

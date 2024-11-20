@@ -1,0 +1,34 @@
+/* Imports */
+@import './animations.css';
+@import './base.css';
+@import './layout.css';
+@import './components/buttons.css';
+@import './components/cards.css';
+@import './components/forms.css';
+@import './components/tables.css';
+@import './components/modals.css';
+@import './pages/landing.css';
+@import './pages/dashboard.css';
+@import './components/notifications.css';
+@import './pages/conseils.css';
+@import './components/icons.css';
+
+/* Variables globales */
+:root {
+  --gold-primary: #ffd700;
+  --gold-light: #ffe666;
+  --gold-dark: #b8860b;
+  --gold-accent: #daa520;
+  --obsidian: #0a0908;
+  --obsidian-light: #1a1817;
+  --text: #ffffff;
+  --border-gold: rgba(255, 215, 0, 0.2);
+  --divine-purple: #800080;
+  --divine-blue: #4169e1;
+}
+
+/* Supprimons l'ancien @font-face et utilisons directement la police */
+body {
+    font-family: 'Cinzel', serif;
+}
+

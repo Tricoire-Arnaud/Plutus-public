@@ -1,0 +1,228 @@
+<div class="container mt-4">
+    <h1>Gestion des charges</h1>
+
+    <% if (locals.flashMessage) { %>
+        <div class="alert alert-info">
+            <%= flashMessage %>
+        </div>
+    <% } %>
+
+    <ul class="nav nav-tabs mb-4" id="chargesTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="fixes-tab" data-bs-toggle="tab" data-bs-target="#fixes" type="button" role="tab">Charges fixes</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="variables-tab" data-bs-toggle="tab" data-bs-target="#variables" type="button" role="tab">Charges variables</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="chargesTabContent">
+        <!-- Charges Fixes -->
+        <div class="tab-pane fade show active" id="fixes" role="tabpanel">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2>Charges fixes</h2>
+                    <form action="/charges" method="POST" class="mb-4">
+                        <input type="hidden" name="type" value="fixe">
+                        <div class="mb-3">
+                            <label for="montantFixe" class="form-label">Montant</label>
+                            <input type="number" class="form-control" id="montantFixe" name="montant" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descriptionFixe" class="form-label">Description <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="descriptionFixe" name="description" required>
+                            <div class="invalid-feedback">
+                                La description est obligatoire
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Ajouter une charge fixe</button>
+                    </form>
+
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <% if (chargesFixes && chargesFixes.length > 0) { %>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Description</th>
+                                            <th>Montant</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% chargesFixes.forEach(charge => { %>
+                                            <tr>
+                                                <td><%= charge.description %></td>
+                                                <td><%= parseFloat(charge.montant).toFixed(2) %> €</td>
+                                                <td>
+                                                    <div class="d-flex gap-2">
+                                                        <button class="btn btn-sm btn-primary edit-charge"
+                                                            data-id="<%= charge.id %>"
+                                                            data-montant="<%= charge.montant %>"
+                                                            data-description="<%= charge.description %>"
+                                                            data-type="fixe">
+                                                            Modifier
+                                                        </button>
+                                                        <form action="/charges/<%= charge.id %>?_method=DELETE" method="POST">
+                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette charge ?')">
+                                                                Supprimer
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    </tbody>
+                                </table>
+                            <% } else { %>
+                                <div class="text-center py-4">
+                                    <p class="text-muted mb-0">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Aucune charge fixe n'a été enregistrée.
+                                    </p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charges Variables -->
+        <div class="tab-pane fade" id="variables" role="tabpanel">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2>Charges variables</h2>
+                    <form action="/charges" method="POST" class="mb-4">
+                        <input type="hidden" name="type" value="variable">
+                        <div class="mb-3">
+                            <label for="montantVariable" class="form-label">Montant</label>
+                            <input type="number" class="form-control" id="montantVariable" name="montant" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descriptionVariable" class="form-label">Description <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="descriptionVariable" name="description" required>
+                            <div class="invalid-feedback">
+                                La description est obligatoire
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dateVariable" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="dateVariable" name="date" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Ajouter une charge variable</button>
+                    </form>
+
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <% if (chargesVariables && chargesVariables.length > 0) { %>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Description</th>
+                                            <th>Montant</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% chargesVariables.forEach(charge => { %>
+                                            <tr>
+                                                <td><%= new Date(charge.date).toLocaleDateString() %></td>
+                                                <td><%= charge.description %></td>
+                                                <td><%= parseFloat(charge.montant).toFixed(2) %> €</td>
+                                                <td>
+                                                    <div class="d-flex gap-2">
+                                                        <button class="btn btn-sm btn-primary edit-charge"
+                                                            data-id="<%= charge.id %>"
+                                                            data-montant="<%= charge.montant %>"
+                                                            data-description="<%= charge.description %>"
+                                                            data-date="<%= charge.date %>"
+                                                            data-type="variable">
+                                                            Modifier
+                                                        </button>
+                                                        <form action="/charges/<%= charge.id %>?_method=DELETE" method="POST">
+                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette charge ?')">
+                                                                Supprimer
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    </tbody>
+                                </table>
+                            <% } else { %>
+                                <div class="text-center py-4">
+                                    <p class="text-muted mb-0">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Aucune charge variable n'a été enregistrée pour la période sélectionnée.
+                                    </p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de modification -->
+<div class="modal fade" id="editChargeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier la charge</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editChargeForm" action="/charges?_method=PUT" method="POST">
+                    <input type="hidden" name="_method" value="PUT">
+                    <input type="hidden" name="id" id="editChargeId">
+                    <input type="hidden" name="type" id="editChargeType">
+                    
+                    <div class="mb-3">
+                        <label for="editMontant" class="form-label">Montant</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="editMontant" name="montant" step="0.01" required>
+                            <span class="input-group-text">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="editDescription" class="form-label">Description <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editDescription" name="description" required>
+                        <div class="invalid-feedback">
+                            La description est obligatoire
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3" id="editDateContainer">
+                        <label for="editDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="editDate" name="date">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/charges.js"></script>
+
+<!-- À ajouter à la fin du fichier -->
+<script>
+    // Auto-suppression du message flash
+    document.addEventListener('DOMContentLoaded', function() {
+        const flashMessage = document.querySelector('.alert-info');
+        if (flashMessage) {
+            setTimeout(() => {
+                flashMessage.remove();
+            }, 5000); // Supprime le message après 5 secondes
+        }
+    });
+</script>

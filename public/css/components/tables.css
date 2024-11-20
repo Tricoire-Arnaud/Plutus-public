@@ -1,0 +1,102 @@
+/* Tables */
+table.table,
+.table-responsive table.table {
+    background: transparent !important;
+    border: 2px solid var(--border-gold) !important;
+    border-radius: 12px !important;
+    margin-bottom: 2rem !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+}
+
+.table > thead > tr > th,
+table.table thead th,
+.table thead th {
+    background: rgba(255, 215, 0, 0.05) !important;
+    color: var(--gold-primary) !important;
+    font-weight: 600 !important;
+    padding: 1rem !important;
+    text-align: left !important;
+    border-bottom: 2px solid var(--border-gold) !important;
+    font-family: 'Cinzel', serif !important;
+}
+
+.table > tbody > tr,
+table.table tbody tr,
+.table tbody tr {
+    background: var(--obsidian) !important;
+    transition: all 0.3s ease !important;
+    border-bottom: 1px solid var(--border-gold) !important;
+}
+
+.table > tbody > tr:hover,
+table.table tbody tr:hover,
+.table tbody tr:hover {
+    background: rgba(255, 215, 0, 0.05) !important;
+    transform: translateX(5px);
+}
+
+.table > tbody > tr > td,
+table.table tbody td,
+.table td {
+    padding: 1rem !important;
+    color: var(--text) !important;
+    border-bottom: 1px solid var(--border-gold) !important;
+    background: transparent !important;
+    vertical-align: middle !important;
+}
+
+/* Style spécifique pour les tables dans les modals */
+.modal .table,
+.modal table.table {
+    background: transparent !important;
+    margin-bottom: 0 !important;
+}
+
+.modal .table > tbody > tr,
+.modal table.table tbody tr {
+    background: rgba(10, 9, 8, 0.7) !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd),
+.table-striped tbody tr:nth-of-type(odd) {
+    background: rgba(255, 215, 0, 0.02) !important;
+}
+
+/* Amélioration des montants dans les tableaux */
+.table td[data-label*="Montant"],
+.table td[data-label*="montant"],
+.table td[data-label*="Total"],
+.table td[data-label*="total"],
+.table td[data-label*="Solde"],
+.table td[data-label*="solde"] {
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: 'Cinzel', serif;
+    color: var(--gold-primary) !important;
+}
+
+/* Amélioration de la lisibilité des totaux */
+.total-row td {
+    font-size: 1.4rem !important;
+    font-weight: 700 !important;
+    background: linear-gradient(145deg, rgba(10, 9, 8, 0.95), rgba(26, 24, 23, 0.95));
+    color: var(--gold-primary) !important;
+}
+
+/* Actions dans les tableaux */
+.table .btn-action {
+    padding: 0.4rem;
+    margin: 0 0.2rem;
+    background: transparent;
+    border: 1px solid var(--border-gold);
+    color: var(--gold-primary);
+    transition: all 0.3s ease;
+}
+
+.table .btn-action:hover {
+    background: var(--gold-primary);
+    color: var(--obsidian);
+}

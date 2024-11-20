@@ -1,0 +1,294 @@
+<div class="container mt-5">
+    <!-- En-tête -->
+    <div class="text-center mb-5">
+        <i class="fas fa-user-circle fa-4x mb-3 text-gold"></i>
+        <h1 class="display-4">Sanctuaire Personnel</h1>
+        <p class="lead text-gold">Gérez votre destinée financière</p>
+    </div>
+
+    <!-- Message flash - Déplacé en haut de la page avec position fixed -->
+    <% if (locals.flashMessage) { %>
+        <div id="flashMessage" class="flash-message <%= typeof flashMessage === 'object' ? (flashMessage.type === 'success' ? 'flash-success' : 'flash-error') : 'flash-info' %>">
+            <div class="flash-content">
+                <i class="fas fa-<%= typeof flashMessage === 'object' ? (flashMessage.type === 'success' ? 'check-circle' : 'exclamation-circle') : 'info-circle' %> me-2"></i>
+                <%= typeof flashMessage === 'object' ? flashMessage.message : flashMessage %>
+            </div>
+        </div>
+    <% } %>
+
+    <div class="row g-4">
+        <!-- Informations du profil -->
+        <div class="col-12 col-md-6">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <h5 class="card-title text-gold">
+                        <i class="fas fa-scroll me-2"></i>Informations du Mortel
+                    </h5>
+                    <form action="/user/update-profile" method="POST">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nom d'utilisateur</label>
+                            <input type="text" id="username" name="username" class="form-control" 
+                                value="<%= user.username %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" 
+                                value="<%= user.email %>" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Sauvegarder les modifications
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sécurité -->
+        <div class="col-12 col-md-6 mt-4 mt-md-0">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <h5 class="card-title text-gold">
+                        <i class="fas fa-shield-alt me-2"></i>Protection Divine
+                    </h5>
+                    <form action="/user/update-password" method="POST" id="passwordForm">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Mot de passe actuel</label>
+                            <div class="input-group">
+                                <input type="password" id="currentPassword" name="currentPassword" 
+                                       required class="form-control">
+                                <button class="btn btn-outline-secondary" type="button" 
+                                        onclick="togglePassword('currentPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">Nouveau mot de passe</label>
+                            <div class="input-group">
+                                <input type="password" id="newPassword" name="newPassword" 
+                                       required class="form-control">
+                                <button class="btn btn-outline-secondary" type="button" 
+                                        onclick="togglePassword('newPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-requirements mt-2 small text-muted">
+                                <div><i class="fas fa-check-circle"></i> Minimum 8 caractères</div>
+                                <div><i class="fas fa-check-circle"></i> Une lettre majuscule</div>
+                                <div><i class="fas fa-check-circle"></i> Une lettre minuscule</div>
+                                <div><i class="fas fa-check-circle"></i> Un chiffre</div>
+                                <div><i class="fas fa-check-circle"></i> Un caractère spécial</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirmer le nouveau mot de passe</label>
+                            <div class="input-group">
+                                <input type="password" id="confirmPassword" name="confirmPassword" 
+                                       required class="form-control">
+                                <button class="btn btn-outline-secondary" type="button" 
+                                        onclick="togglePassword('confirmPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-key me-2"></i>Mettre à jour le mot de passe
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zone dangereuse -->
+        <div class="col-12">
+            <div class="card bg-dark text-light border-danger">
+                <div class="card-body">
+                    <h5 class="card-title text-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Zone des Enfers
+                    </h5>
+                    <p class="text-muted">La suppression de votre compte est irréversible. Toutes vos données seront définitivement perdues dans les abysses.</p>
+                    <form action="/user/delete-account" method="POST" onsubmit="return confirmDelete()">
+                        <div class="mb-3">
+                            <label for="deleteConfirm" class="form-label">Tapez "SUPPRIMER" pour confirmer</label>
+                            <input type="text" id="deleteConfirm" class="form-control" required pattern="SUPPRIMER">
+                        </div>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-skull me-2"></i>Supprimer définitivement mon compte
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.text-gold {
+    color: var(--gold-primary) !important;
+}
+
+.card {
+    border: 1px solid var(--border-gold);
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+    border: none;
+}
+
+.form-control:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+
+/* Ajustements pour les boutons de visibilité du mot de passe */
+.input-group {
+    position: relative;
+}
+
+.input-group .form-control {
+    padding-right: 46px; /* Espace pour le bouton */
+}
+
+.input-group .btn-outline-secondary {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 4;
+    border-radius: 0 4px 4px 0;
+    border-color: var(--border-gold);
+    color: var(--gold-primary);
+    min-width: 46px;
+    padding: 0.375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-group .btn-outline-secondary:hover,
+.input-group .btn-outline-secondary:focus {
+    background-color: rgba(255, 215, 0, 0.1);
+    border-color: var(--gold-primary);
+    color: var(--gold-primary);
+}
+
+/* Ajustements pour petits écrans */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .btn:not(.btn-outline-secondary) {
+        margin-bottom: 0.5rem;
+    }
+}
+
+.flash-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideDown 0.5s ease-out, fadeOut 0.5s ease-out 4.5s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.flash-content {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.flash-success {
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+}
+
+.flash-error {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+}
+
+.flash-info {
+    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+    color: white;
+}
+
+@keyframes slideDown {
+    0% {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+</style>
+
+<script>
+function confirmDelete() {
+    const confirmInput = document.getElementById('deleteConfirm');
+    if (confirmInput.value !== 'SUPPRIMER') {
+        alert('Veuillez écrire "SUPPRIMER" pour confirmer la suppression');
+        return false;
+    }
+    return confirm('Êtes-vous absolument sûr de vouloir supprimer votre compte ? Cette action est irréversible.');
+}
+
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const type = input.type === 'password' ? 'text' : 'password';
+    input.type = type;
+    const icon = event.currentTarget.querySelector('i');
+    icon.className = `fas fa-${type === 'password' ? 'eye' : 'eye-slash'}`;
+}
+
+// Validation en temps réel du mot de passe
+document.getElementById('newPassword').addEventListener('input', function(e) {
+    const password = e.target.value;
+    const requirements = document.querySelectorAll('.password-requirements div');
+    
+    requirements[0].classList.toggle('text-success', password.length >= 8);
+    requirements[1].classList.toggle('text-success', /[A-Z]/.test(password));
+    requirements[2].classList.toggle('text-success', /[a-z]/.test(password));
+    requirements[3].classList.toggle('text-success', /\d/.test(password));
+    requirements[4].classList.toggle('text-success', /[^A-Za-z0-9]/.test(password));
+});
+
+// Validation de la correspondance des mots de passe
+document.getElementById('passwordForm').addEventListener('submit', function(e) {
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    if (newPassword !== confirmPassword) {
+        e.preventDefault();
+        alert('Les mots de passe ne correspondent pas');
+    }
+});
+
+// Auto-suppression du message flash
+document.addEventListener('DOMContentLoaded', function() {
+    const flashMessage = document.getElementById('flashMessage');
+    if (flashMessage) {
+        setTimeout(() => {
+            flashMessage.remove();
+        }, 5000); // Supprime le message après 5 secondes
+    }
+});
+</script>

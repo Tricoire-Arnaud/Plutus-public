@@ -1,0 +1,236 @@
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Gestion des Budgets</h1>
+
+    <!-- Résumé financier en haut de la page -->
+    <div class="row mb-4 g-3">
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="card glassmorphism neon-card h-100">
+                <div class="card-body">
+                    <h5 class="card-title neon-text">Revenus Totaux</h5>
+                    <h6 class="card-subtitle mb-2">
+                        <%= numeral(totalRevenus).format('0,0.00') %> €
+                    </h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="card glassmorphism neon-card h-100">
+                <div class="card-body">
+                    <h5 class="card-title neon-text">Charges Totales</h5>
+                    <h6 class="card-subtitle mb-2">
+                        <%= numeral(totalChargesFixes + totalChargesVariables).format('0,0.00') %> €
+                    </h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="card glassmorphism neon-card h-100">
+                <div class="card-body">
+                    <h5 class="card-title neon-text">Budgets Totaux</h5>
+                    <h6 class="card-subtitle mb-2">
+                        <%= numeral(totalBudget).format('0,0.00') %> €
+                    </h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="card glassmorphism neon-card h-100">
+                <div class="card-body">
+                    <h5 class="card-title neon-text">Dépenses</h5>
+                    <h6 class="card-subtitle mb-2">
+                        <%= numeral(totalDepenses).format('0,0.00') %> €
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card glassmorphism neon-card shadow-lg mb-4">
+        <div class="card-body text-center">
+            <h2 class="card-title h4 mb-4 neon-text">Montant Disponible Pour La Période Du <%= new Date(dateFilter.startDate).toLocaleDateString('fr-FR') %> au <%= new Date(dateFilter.endDate).toLocaleDateString('fr-FR') %></h2>
+            <h6 class="mb-0">
+                <%= numeral(montantDisponible).format('0,0.00') %> €
+            </h6>
+        </div>
+    </div>
+
+    <% if (locals.flashMessage) { %>
+        <div class="alert alert-info">
+            <%= flashMessage %>
+        </div>
+    <% } %>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3>Définir un Nouveau Budget</h3>
+            <form action="/budgets" method="POST">
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Montant</label>
+                    <input type="number" class="form-control" id="amount" name="amount" step="0.01" required>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Catégorie</label>
+                    <select class="form-select" id="category" name="category" required>
+                        <% categories.forEach(category => { %>
+                            <option value="<%= category.id %>">
+                                <%= category.name %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="startDate" class="form-label">Date de Début</label>
+                    <input type="date" class="form-control" id="startDate" name="start_date"
+                        value="<%= dateFilter.startDate %>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="endDate" class="form-label">Date de Fin</label>
+                    <input type="date" class="form-control" id="endDate" name="end_date"
+                        value="<%= dateFilter.endDate %>" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Définir le Budget</button>
+            </form>
+        </div>
+    </div>
+
+    <h2>Budgets Actuels</h2>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <% if (budgets && budgets.length > 0) { %>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Catégorie</th>
+                                <th>Montant</th>
+                                <th>Début</th>
+                                <th>Fin</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% budgets.forEach(budget => { %>
+                                <tr>
+                                    <td data-label="Catégorie">
+                                        <%= categories.find(cat => cat.id === budget.category_id)?.name || 'Catégorie inconnue' %>
+                                    </td>
+                                    <td data-label="Montant">
+                                        <%= parseFloat(budget.amount).toFixed(2) %> €
+                                    </td>
+                                    <td data-label="Début">
+                                        <%= new Date(budget.start_date).toLocaleDateString('fr-FR') %>
+                                    </td>
+                                    <td data-label="Fin">
+                                        <%= new Date(budget.end_date).toLocaleDateString('fr-FR') %>
+                                    </td>
+                                    <td data-label="Actions">
+                                        <div class="d-flex flex-column flex-sm-row gap-2">
+                                            <button class="btn btn-sm btn-primary edit-budget" 
+                                                data-id="<%= budget.id %>"
+                                                data-amount="<%= budget.amount %>" 
+                                                data-category="<%= budget.category_id %>"
+                                                data-start-date="<%= budget.start_date %>"
+                                                data-end-date="<%= budget.end_date %>">
+                                                Modifier
+                                            </button>
+                                            <form action="/budgets/<%= budget.id %>?_method=DELETE" method="POST">
+                                                <button type="submit" class="btn btn-sm btn-danger w-100"
+                                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce budget ?')">
+                                                    Supprimer
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <div class="text-center py-4">
+                        <p class="text-muted mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Aucun budget n'a été défini pour le moment.
+                        </p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="editBudgetModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier le budget</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editBudgetForm" action="/budgets?_method=PUT" method="POST">
+                    <input type="hidden" name="_method" value="PUT">
+                    <input type="hidden" name="id" id="editBudgetId">
+                    <div class="mb-3">
+                        <label for="editAmount" class="form-label">Montant</label>
+                        <input type="number" class="form-control" id="editAmount" name="amount" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCategory" class="form-label">Catégorie</label>
+                        <select class="form-select" id="editCategory" name="category" required>
+                            <% categories.forEach(category => { %>
+                                <option value="<%= category.id %>">
+                                    <%= category.name %>
+                                </option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editStartDate" class="form-label">Date de Début</label>
+                        <input type="date" class="form-control" id="editStartDate" name="start_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEndDate" class="form-label">Date de Fin</label>
+                        <input type="date" class="form-control" id="editEndDate" name="end_date" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const editButtons = document.querySelectorAll('.edit-budget');
+        const editModal = new bootstrap.Modal(document.getElementById('editBudgetModal'));
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const budgetId = this.getAttribute('data-id');
+                const amount = this.getAttribute('data-amount');
+                const category = this.getAttribute('data-category');
+                const startDate = new Date(this.getAttribute('data-start-date')).toISOString().split('T')[0];
+                const endDate = new Date(this.getAttribute('data-end-date')).toISOString().split('T')[0];
+
+                document.getElementById('editBudgetId').value = budgetId;
+                document.getElementById('editAmount').value = amount;
+                document.getElementById('editCategory').value = category;
+                document.getElementById('editStartDate').value = startDate;
+                document.getElementById('editEndDate').value = endDate;
+
+                editModal.show();
+            });
+        });
+    });
+
+    // Auto-suppression du message flash
+    document.addEventListener('DOMContentLoaded', function() {
+        const flashMessage = document.querySelector('.alert-info');
+        if (flashMessage) {
+            setTimeout(() => {
+                flashMessage.remove();
+            }, 5000); // Supprime le message après 5 secondes
+        }
+    });
+</script>

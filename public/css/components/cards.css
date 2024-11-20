@@ -1,0 +1,76 @@
+/* Cards avec effet divin */
+.card {
+    background: linear-gradient(145deg, rgba(10, 9, 8, 0.95), rgba(26, 24, 23, 0.95));
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 6px 20px rgba(255, 215, 0, 0.15),
+        0 0 0 1px var(--border-gold);
+}
+
+/* Aspect items */
+.aspect-item {
+    padding: 2rem;
+    background: linear-gradient(145deg, rgba(10, 9, 8, 0.8), rgba(26, 24, 23, 0.8));
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: default;
+}
+
+.aspect-item:hover {
+    transform: translateX(10px);
+    border-color: var(--gold-primary);
+    box-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.1),
+        0 0 40px rgba(255, 215, 0, 0.05);
+    background: linear-gradient(145deg, 
+        rgba(255, 215, 0, 0.08), 
+        rgba(255, 215, 0, 0.03)
+    );
+}
+
+/* Excellence items */
+.excellence-item {
+    padding: 2rem;
+    background: linear-gradient(145deg, 
+        rgba(10, 9, 8, 0.9), 
+        rgba(26, 24, 23, 0.9)
+    );
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    transition: all 0.4s ease;
+}
+
+/* Cartes de recommandations */
+.recommendation-card {
+    background: linear-gradient(145deg, rgba(10, 9, 8, 0.95), rgba(26, 24, 23, 0.95));
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.recommendation-card.urgente {
+    border-left: 4px solid #dc3545;
+}
+
+.recommendation-card.haute {
+    border-left: 4px solid #ffc107;
+}
+
+/* Cartes de catégories */
+.category-card {
+    background: linear-gradient(145deg, rgba(10, 9, 8, 0.9), rgba(26, 24, 23, 0.9));
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}

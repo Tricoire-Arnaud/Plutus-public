@@ -1,0 +1,55 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body p-5">
+                    <h2 class="card-title text-center mb-4">Connexion</h2>
+                    
+                    <% if (locals.error) { %>
+                        <div class="alert alert-danger mb-4" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <%= error %>
+                        </div>
+                    <% } %>
+                    
+                    <form action="/login" method="POST" class="needs-validation" novalidate>
+                        <div class="mb-4">
+                            <label class="form-label" for="email">Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                                <input class="form-control" id="email" type="email" name="email" 
+                                       required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                                <div class="invalid-feedback">
+                                    Veuillez entrer une adresse email valide
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label" for="password">Mot de passe</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input class="form-control" id="password" type="password" 
+                                       name="password" required minlength="6">
+                                <div class="invalid-feedback">
+                                    Le mot de passe doit contenir au moins 6 caractères
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" type="submit" style="white-space: nowrap;">
+                                Se&nbsp;connecter
+                            </button>
+                        </div>
+                    </form>
+                    <p class="text-center mt-4">
+                        Pas encore de compte ? <a href="/register">S'inscrire</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
